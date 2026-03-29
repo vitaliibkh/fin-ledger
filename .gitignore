@@ -1,0 +1,22 @@
+# devshells
+flake.nix
+flake.lock
+shells/
+
+# direnv
+**/.envrc
+**/.direnv/
+
+# backend
+backend/.dotnet_cli/
+backend/.nuget/
+
+# frontend
+frontend/.npm-cache/
+frontend/.npm-global/
+frontend/.angular-config.json
+
+# database
+database/.pgdata/
+database/.pgadmin/
+database/postgres-language-server.jsonc
