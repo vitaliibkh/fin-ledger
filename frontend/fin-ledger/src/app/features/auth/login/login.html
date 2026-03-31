@@ -1,0 +1,29 @@
+<div class="auth-page">
+  <div class="login-card">
+    <header class="header">
+      <span class="material-symbols-outlined logo-icon">account_balance</span>
+      <h1>FinLedger</h1>
+      <p>Enter your credentials to access the system</p>
+    </header>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="field">
+        <label for="user">Username</label>
+        <input id="user" type="text" formControlName="username" placeholder="Username">
+      </div>
+
+      <div class="field">
+        <label for="pass">Password</label>
+        <input id="pass" type="password" formControlName="password" placeholder="Min. 8 characters">
+
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']) {
+        <span class="error-text">Password must be at least 8 characters.</span>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="btn-primary">
+        Sign In
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+@use '../../../../styles/vars' as *;
+@use '../../../../styles/mixins' as *;
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: $bg-dark;
+}
+
+.login-card {
+  @include floating-card;
+  width: 100%;
+  max-width: 420px;
+  padding: 48px;
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+
+    .logo-icon {
+      font-size: 48px;
+      color: $primary-green;
+    }
+
+    h1 {
+      color: $text-high;
+      margin: 12px 0 4px;
+      font-size: 24px;
+    }
+
+    p {
+      color: $text-low;
+      font-size: 14px;
+    }
+  }
+}
+
+.field {
+  margin-bottom: 24px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: $text-low;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  input {
+    @include input-base;
+  }
+}
+
+.error-text {
+  color: $error;
+  font-size: 12px;
+  display: block;
+  margin-top: 6px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background-color: $primary-green;
+  color: $bg-dark;
+  border: none;
+  border-radius: $radius-md;
+  font-weight: 700;
+  cursor: pointer;
+  transition: $soft-transition;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
