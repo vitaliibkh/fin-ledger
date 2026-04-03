@@ -9,15 +9,15 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
       <div class="field">
         <label for="user">Username</label>
-        <input id="user" type="text" formControlName="username" placeholder="Username">
+        <input id="user" type="text" formControlName="username" placeholder="Username" class="input-base">
       </div>
 
       <div class="field">
         <label for="pass">Password</label>
-        <input id="pass" type="password" formControlName="password" placeholder="Min. 8 characters">
+        <input id="pass" type="password" formControlName="password" placeholder="Min. 8 characters" class="input-base">
 
         @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']) {
-        <span class="error-text">Password must be at least 8 characters.</span>
+          <span class="error-text">Password must be at least 8 characters.</span>
         }
       </div>
 

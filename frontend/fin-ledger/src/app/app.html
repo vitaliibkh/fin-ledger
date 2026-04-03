@@ -1,1 +1,41 @@
+@if (authService.isAuthenticated()) {
+<div class="app-shell">
+
+  <aside class="sidebar-container floating-card">
+    <div class="brand">
+      <span class="material-symbols-outlined brand-icon">account_balance</span>
+      <h2>FinLedger</h2>
+    </div>
+
+    <nav class="nav-menu">
+      @for (item of visibleNavItems(); track item.route) {
+      <a [routerLink]="item.route" routerLinkActive="active-link" class="nav-link">
+        <span class="material-symbols-outlined">{{ item.icon }}</span>
+        {{ item.label }}
+      </a>
+      }
+    </nav>
+
+    <div class="user-profile">
+      <div class="profile-info">
+        <div class="avatar"><span class="material-symbols-outlined">person</span></div>
+        <div class="user-text">
+          <span class="username">{{ authService.currentUser()?.username }}</span>
+          <span class="role">{{ authService.currentUser()?.role }}</span>
+        </div>
+      </div>
+      <button class="btn-icon logout-btn" (click)="authService.logout()" title="Log out">
+        <span class="material-symbols-outlined">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-viewport">
+    <main class="content-area floating-card">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+} @else {
 <router-outlet />
+}

@@ -1,0 +1,29 @@
+@use '../../../../styles/vars' as *;
+@use '../../../../styles/mixins' as *;
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: $text-low;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+  font-size: 14px;
+  transition: $soft-transition;
+
+  &:hover {
+    color: $primary-green;
+  }
+}
+
+.form-container {
+  @include floating-card;
+  padding: 32px;
+}
+
+.mt-4 {
+  margin-top: 24px;
+}

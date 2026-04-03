@@ -1,0 +1,122 @@
+<div class="page-header">
+  <div class="title-block">
+    <h2>Journal Entries</h2>
+    <p>View and manage daily financial operations.</p>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label>Date Range</label>
+      <div class="date-inputs">
+        <input type="date" class="input-base" title="Start Date">
+        <span>to</span>
+        <input type="date" class="input-base" title="End Date">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Category</label>
+      <select class="input-base">
+        <option value="">All Categories</option>
+        <option value="1">Office Supplies</option>
+        <option value="2">Software Licenses</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Account</label>
+      <select class="input-base">
+        <option value="">All Accounts</option>
+        <option value="1010">1010 - Main Bank</option>
+        <option value="3110">3110 - Accounts Payable</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Counterparty</label>
+      <select class="input-base">
+        <option value="">All Counterparties</option>
+        <option value="1">TechCorp LLC</option>
+        <option value="2">OfficeMax</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Status</label>
+      <select class="input-base">
+        <option value="">All Statuses</option>
+        <option value="Completed">Completed</option>
+        <option value="Pending">Pending</option>
+        <option value="Reversed">Reversed</option>
+      </select>
+    </div>
+
+    <button class="btn-secondary">Apply Filters</button>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Debit Acc</th>
+        <th>Credit Acc</th>
+        <th>Counterparty</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (entry of entries(); track entry.id) {
+      <tr>
+        <td class="text-muted">#{{ entry.id }}</td>
+        <td>{{ entry.date | date:'shortDate' }}</td>
+        <td>{{ entry.categoryName }}</td>
+        <td><span class="badge badge-outline">{{ entry.debitAccountCode }}</span></td>
+        <td><span class="badge badge-outline">{{ entry.creditAccountCode }}</span></td>
+        <td class="text-muted">{{ entry.counterpartyName || '—' }}</td>
+        <td class="amount font-mono">{{ entry.amount | currency:'USD' }}</td>
+        <td>
+          @if (canEditStatus()) {
+          <select class="status-select" [ngClass]="'status-' + entry.status.toLowerCase()"
+            (change)="updateStatus(entry, $event)">
+            @if (entry.status === 'Pending') {
+            <option value="Pending" selected>Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+            }
+            @if (entry.status === 'Completed') {
+            <option value="Completed" selected>Completed</option>
+            <option value="Reversed">Reversed</option>
+            }
+            @if (entry.status === 'Cancelled') {
+            <option value="Cancelled" disabled selected>Cancelled</option>
+            }
+            @if (entry.status === 'Reversed') {
+            <option value="Reversed" disabled selected>Reversed</option>
+            }
+          </select>
+          } @else {
+          <span class="badge" [ngClass]="'badge-' + entry.status.toLowerCase()">
+            {{ entry.status }}
+          </span>
+          }
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="8" class="empty-state">No journal entries found for the selected period.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (isOperator()) {
+<button class="fab" (click)="openAddModal()" title="Add New Entry">
+  <span class="material-symbols-outlined">add</span>
+</button>
+}

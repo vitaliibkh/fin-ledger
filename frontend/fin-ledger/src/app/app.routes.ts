@@ -11,14 +11,14 @@ export const routes: Routes = [
     path: 'operations',
     loadChildren: () => import('./features/operations/operations-module').then(m => m.OperationsModule),
     canActivate: [roleGuard],
-    data: { roles: ['Operator'] }
+    data: { roles: ['Operator', 'Financial Manager', 'Analyst'] }
   },
 
   {
     path: 'management',
     loadChildren: () => import('./features/management/management-module').then(m => m.ManagementModule),
     canActivate: [roleGuard],
-    data: { roles: ['Financial Manager'] }
+    data: { roles: ['Operator', 'Financial Manager', 'Analyst'] }
   },
 
   {
@@ -28,11 +28,12 @@ export const routes: Routes = [
     data: { roles: ['Analyst'] }
   },
 
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+
   {
     path: 'not-found',
     loadComponent: () => import('./features/not-found/not-found').then(c => c.NotFound)
   },
 
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: '**', redirectTo: 'not-found' }
 ];

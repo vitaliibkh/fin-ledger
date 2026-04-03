@@ -1,0 +1,114 @@
+@use '../../../../styles/vars' as *;
+@use '../../../../styles/mixins' as *;
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px;
+  background-color: rgba($bg-dark, 0.5);
+  border-radius: $radius-md;
+  border: 1px solid $border-color;
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      color: $text-low;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+
+  .date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: $text-low;
+      font-size: 14px;
+    }
+  }
+
+  .input-base {
+    @include input-base;
+    padding: 8px 12px;
+  }
+}
+
+.status-select {
+  @include input-base;
+  padding: 4px 28px 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  height: auto;
+  cursor: pointer;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 16px;
+
+  &.status-pending {
+    background-color: rgba(#fcd34d, 0.15);
+    color: #fcd34d;
+    border-color: transparent;
+  }
+
+  &.status-completed {
+    background-color: rgba($primary-green, 0.15);
+    color: $primary-green;
+    border-color: transparent;
+  }
+
+  &.status-cancelled,
+  &.status-reversed {
+    background-color: rgba($error, 0.15);
+    color: $error;
+    border-color: transparent;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $border-color;
+  }
+
+  option {
+    background-color: $surface-card;
+    color: $text-high;
+  }
+}
+
+.fab {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: $primary-green;
+  color: $bg-dark;
+  border: none;
+  box-shadow: 0 4px 12px rgba($primary-green, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $soft-transition;
+  z-index: 10;
+
+  span {
+    font-size: 28px;
+  }
+
+  &:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 6px 16px rgba($primary-green, 0.5);
+  }
+}

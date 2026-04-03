@@ -1,0 +1,110 @@
+<div class="page-header">
+  <div class="title-block">
+    <h2>Chart of Accounts</h2>
+    <p>Manage ledger codes, types, and hierarchical structures.</p>
+  </div>
+  @if (isManager()) {
+  <button class="btn-primary" (click)="openModal()">
+    <span class="material-symbols-outlined">add</span> New Account
+  </button>
+  }
+</div>
+
+<div class="table-wrapper floating-card">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Balance</th>
+        <th>Status</th>
+        @if (isManager()) { <th class="actions-col">Actions</th> }
+      </tr>
+    </thead>
+    <tbody>
+      @for (account of pageState().items; track account.id) {
+      <tr [class.inactive-row]="!account.isActive">
+        <td class="font-mono"><b>{{ account.code }}</b></td>
+        <td>{{ account.name }}</td>
+        <td>{{ account.type }}</td>
+        <td class="amount font-mono">{{ account.balance | number:'1.2-2' }}</td>
+        <td>
+          <span class="badge" [class.badge-success]="account.isActive" [class.badge-neutral]="!account.isActive">
+            {{ account.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+        @if (isManager()) {
+        <td class="actions-cell">
+          <button class="btn-icon" (click)="openModal(account)"><span
+              class="material-symbols-outlined">edit</span></button>
+          <button class="btn-icon" (click)="toggleStatus(account)">
+            <span class="material-symbols-outlined">{{ account.isActive ? 'block' : 'check_circle' }}</span>
+          </button>
+        </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <app-pagination
+    [currentPage]="pageState().pageNumber"
+    [totalPages]="pageState().totalPages"
+    [pageSize]="pageState().pageSize"
+    [totalItems]="pageState().totalCount"
+    (pageChange)="loadAccounts($event)">
+  </app-pagination>
+</div>
+
+@if (isModalOpen()) {
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content floating-card" (click)="$event.stopPropagation()">
+    <h3>{{ editingAccountId() ? 'Edit Account' : 'New Account' }}</h3>
+
+    <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+      <div class="form-grid">
+        <div class="field">
+          <label>Code *</label>
+          <input type="text" formControlName="code" class="input-base" placeholder="e.g. 1010">
+        </div>
+        <div class="field">
+          <label>Account Name *</label>
+          <input type="text" formControlName="name" class="input-base">
+        </div>
+        <div class="field">
+          <label>Account Type *</label>
+          <select formControlName="type" class="input-base">
+            <option value="Active">Active</option>
+            <option value="Passive">Passive</option>
+            <option value="Active-Passive">Active-Passive</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Currency *</label>
+          <select formControlName="currencyId" class="input-base">
+            <option [ngValue]="null" disabled>Select Currency</option>
+            @for (c of currencies(); track c.id) {
+            <option [ngValue]="c.id">{{ c.code }} - {{ c.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="field full-width">
+          <label>Parent Account (Optional)</label>
+          <select formControlName="parentId" class="input-base">
+            <option [ngValue]="null">None (Root Level)</option>
+            @for (p of availableParents(); track p.id) {
+            <option [ngValue]="p.id">{{ p.code }} - {{ p.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="accountForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+}

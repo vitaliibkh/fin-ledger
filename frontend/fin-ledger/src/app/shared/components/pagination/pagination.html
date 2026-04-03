@@ -1,0 +1,23 @@
+<div class="pagination-wrapper">
+  <div class="page-stats">
+    Showing <span class="font-mono">{{ startIndex() }}</span> to
+    <span class="font-mono">{{ endIndex() }}</span> of
+    <span class="font-mono">{{ totalItems() }}</span> entries
+  </div>
+
+  <div class="page-controls">
+    <button class="btn-page" (click)="onPrev()" [disabled]="currentPage() === 1">
+      <span class="material-symbols-outlined">chevron_left</span>
+      Prev
+    </button>
+
+    <div class="current-page-indicator">
+      Page {{ currentPage() }} of {{ totalPages() }}
+    </div>
+
+    <button class="btn-page" (click)="onNext()" [disabled]="currentPage() === totalPages()">
+      Next
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>

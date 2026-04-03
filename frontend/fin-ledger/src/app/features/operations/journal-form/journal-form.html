@@ -1,0 +1,71 @@
+<button class="btn-back" (click)="goBack()">
+  <span class="material-symbols-outlined">arrow_back</span>
+  Back to Journal
+</button>
+
+<div class="page-header">
+  <div class="title-block">
+    <h2>New Journal Entry</h2>
+    <p>Record a new financial operation.</p>
+  </div>
+</div>
+
+<div class="form-container floating-card">
+  <form [formGroup]="entryForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Date *</label>
+        <input type="date" formControlName="date" class="input-base">
+      </div>
+
+      <div class="field">
+        <label>Amount *</label>
+        <input type="number" formControlName="amount" class="input-base" placeholder="0.00" step="0.01">
+      </div>
+
+      <div class="field">
+        <label>Category *</label>
+        <select formControlName="categoryId" class="input-base">
+          <option value="" disabled>Select Category</option>
+          <option value="1">Office Supplies</option>
+          <option value="2">Software Licenses</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Counterparty</label>
+        <select formControlName="counterpartyId" class="input-base">
+          <option value="">None (Internal)</option>
+          <option value="1">TechCorp LLC</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Debit Account *</label>
+        <select formControlName="debitAccountId" class="input-base">
+          <option value="" disabled>Select Account to Debit</option>
+          <option value="1">1010 - Main Bank</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Credit Account *</label>
+        <select formControlName="creditAccountId" class="input-base">
+          <option value="" disabled>Select Account to Credit</option>
+          <option value="2">3110 - Accounts Payable</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field full-width mt-4">
+      <label>Comment</label>
+      <input type="text" formControlName="comment" class="input-base" placeholder="Additional details...">
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-ghost" (click)="goBack()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="entryForm.invalid">Save Entry</button>
+    </div>
+  </form>
+</div>

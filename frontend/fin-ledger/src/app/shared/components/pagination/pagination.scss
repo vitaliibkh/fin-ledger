@@ -1,0 +1,64 @@
+@use '../../../../styles/vars' as *;
+@use '../../../../styles/mixins' as *;
+
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid $border-color;
+  background-color: rgba($bg-dark, 0.3);
+  border-bottom-left-radius: $radius-lg;
+  border-bottom-right-radius: $radius-lg;
+}
+
+.page-stats {
+  color: $text-low;
+  font-size: 13px;
+
+  .font-mono {
+    color: $text-high;
+    font-weight: 600;
+  }
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.current-page-indicator {
+  color: $text-high;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn-page {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background-color: $surface-card;
+  color: $text-high;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  font-size: 13px;
+  cursor: pointer;
+  transition: $soft-transition;
+
+  span {
+    font-size: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba($primary-green, 0.1);
+    color: $primary-green;
+    border-color: $primary-green;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
