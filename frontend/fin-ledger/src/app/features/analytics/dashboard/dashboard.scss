@@ -1,0 +1,83 @@
+@use '../../../../styles/vars' as *;
+@use '../../../../styles/mixins' as *;
+
+.text-success {
+  color: $primary-green !important;
+}
+
+.text-error {
+  color: $error !important;
+}
+
+.card-title {
+  font-size: 16px;
+  color: $text-high;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+
+  .kpi-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .kpi-title {
+      color: $text-low;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-family: monospace;
+    }
+  }
+}
+
+.dashboard-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .chart-container {
+    padding: 24px;
+
+    .canvas-wrapper {
+      position: relative;
+      height: 400px;
+      width: 100%;
+    }
+  }
+
+  .report-panel {
+    padding: 24px;
+
+    .report-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      .field {
+        margin: 0;
+        min-width: 200px;
+      }
+
+      .btn-primary {
+        height: 42px;
+        padding: 0 24px;
+        white-space: nowrap;
+      }
+    }
+  }
+}

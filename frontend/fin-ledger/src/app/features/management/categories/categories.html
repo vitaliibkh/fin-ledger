@@ -1,1 +1,89 @@
-<p>categories works!</p>
+<div class="page-header">
+  <div class="title-block">
+    <h2>Cash Flow Categories</h2>
+    <p>Manage financial hierarchies and reporting structures.</p>
+  </div>
+  @if (isManager()) {
+    <button class="btn-primary" (click)="openModal()"><span class="material-symbols-outlined">add</span> New Category</button>
+  }
+</div>
+
+<div class="filters floating-card" style="margin-bottom: 24px; display: flex; gap: 16px; padding: 16px;">
+  <div class="field" style="flex: 1; margin: 0;">
+    <input type="text" class="input-base" placeholder="Search categories..."
+           [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)">
+  </div>
+  <div class="field" style="width: 200px; margin: 0;">
+    <select class="input-base" [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="">All Statuses</option>
+      <option value="true">Active</option>
+      <option value="false">Inactive</option>
+    </select>
+  </div>
+  <button class="btn-secondary" (click)="applyFilters()">Search</button>
+</div>
+
+<div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Parent Category</th>
+        <th>Status</th>
+        @if (isManager()) { <th class="actions-col">Actions</th> }
+      </tr>
+    </thead>
+    <tbody>
+      @for (cat of pageState().items; track cat.id) {
+        <tr [class.inactive-row]="!cat.isActive">
+          <td [style.padding-left.px]="cat.parentId ? 40 : 16">
+            @if (cat.parentId) {
+              <span class="material-symbols-outlined text-muted" style="font-size: 16px; vertical-align: text-bottom; margin-right: 4px;">subdirectory_arrow_right</span>
+            }
+            <b>{{ cat.name }}</b>
+          </td>
+          <td class="text-muted">{{ cat.parentName || '— (Root)' }}</td>
+          <td><span class="badge" [class.badge-success]="cat.isActive" [class.badge-neutral]="!cat.isActive">{{ cat.isActive ? 'Active' : 'Inactive' }}</span></td>
+          @if (isManager()) {
+            <td class="actions-cell">
+              <button class="btn-icon" (click)="openModal(cat)"><span class="material-symbols-outlined">edit</span></button>
+              <button class="btn-icon" (click)="toggleStatus(cat)"><span class="material-symbols-outlined">{{ cat.isActive ? 'block' : 'check_circle' }}</span></button>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+  <app-pagination [currentPage]="pageState().pageNumber" [totalPages]="pageState().totalPages"
+    [pageSize]="pageState().pageSize" [totalItems]="pageState().totalCount"
+    (pageChange)="loadCategories($event)"></app-pagination>
+</div>
+
+@if (isModalOpen()) {
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>{{ editingId() ? 'Edit Category' : 'New Category' }}</h3>
+    <form [formGroup]="catForm" (ngSubmit)="save()">
+      <div class="form-grid">
+        <div class="field full-width">
+          <label>Name *</label>
+          <input type="text" formControlName="name" class="input-base">
+        </div>
+        <div class="field full-width">
+          <label>Parent Category</label>
+          <select formControlName="parentId" class="input-base">
+            <option [ngValue]="null">None (Root Level)</option>
+            @for (p of availableParents(); track p.id) {
+            <option [ngValue]="p.id">{{ p.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="catForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+}

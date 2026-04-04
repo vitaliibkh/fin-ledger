@@ -1,1 +1,71 @@
-<p>dashboard works!</p>
+<div class="page-header">
+  <div class="title-block">
+    <h2>Analytics Dashboard</h2>
+    <p>Financial overview and report generation.</p>
+  </div>
+</div>
+
+@if (metrics(); as m) {
+<div class="kpi-grid">
+  <div class="kpi-card floating-card">
+    <span class="kpi-title">Total Revenue (YTD)</span>
+    <span class="kpi-value text-success">{{ m.totalRevenue | currency:'USD' }}</span>
+  </div>
+  <div class="kpi-card floating-card">
+    <span class="kpi-title">Total Expenses (YTD)</span>
+    <span class="kpi-value text-error">{{ m.totalExpenses | currency:'USD' }}</span>
+  </div>
+  <div class="kpi-card floating-card">
+    <span class="kpi-title">Net Cash Flow</span>
+    <span class="kpi-value" [class.text-success]="m.netCashFlow > 0" [class.text-error]="m.netCashFlow < 0">
+      {{ m.netCashFlow | currency:'USD' }}
+    </span>
+  </div>
+</div>
+}
+
+<div class="dashboard-stack">
+
+  <div class="chart-container floating-card">
+    <h3 class="card-title">Cash Flow Trends (6 Months)</h3>
+    <div class="canvas-wrapper">
+      <canvas baseChart [data]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"
+        [legend]="barChartLegend" type="bar">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="report-panel floating-card">
+    <div class="panel-header" style="margin-bottom: 24px;">
+      <h3 class="card-title">Export Reports</h3>
+      <p class="text-muted" style="margin: 0; font-size: 14px;">Generate downloadable CSV reports for external analysis.
+      </p>
+    </div>
+
+    <div class="report-controls">
+      <div class="field" style="flex: 2;">
+        <label>Report Type</label>
+        <select class="input-base" [(ngModel)]="reportType">
+          <option value="ledger">Transaction Ledger (Raw Data)</option>
+          <option value="category">Category Summary (Aggregated)</option>
+        </select>
+      </div>
+
+      <div class="field" style="flex: 1;">
+        <label>Start Date</label>
+        <input type="date" class="input-base" [(ngModel)]="reportStartDate">
+      </div>
+
+      <div class="field" style="flex: 1;">
+        <label>End Date</label>
+        <input type="date" class="input-base" [(ngModel)]="reportEndDate">
+      </div>
+
+      <button class="btn-primary" (click)="generateReport()">
+        <span class="material-symbols-outlined">download</span>
+        Download CSV
+      </button>
+    </div>
+  </div>
+
+</div>

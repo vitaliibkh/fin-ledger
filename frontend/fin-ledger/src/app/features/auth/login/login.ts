@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Auth } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   standalone: false,
@@ -10,7 +10,7 @@ import { Auth } from '../../../core/services/auth';
 })
 export class Login {
   private fb = inject(FormBuilder);
-  private authService = inject(Auth);
+  private authService = inject(AuthService);
 
   loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3)]],

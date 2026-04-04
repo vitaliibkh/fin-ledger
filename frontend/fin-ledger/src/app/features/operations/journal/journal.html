@@ -3,56 +3,63 @@
     <h2>Journal Entries</h2>
     <p>View and manage daily financial operations.</p>
   </div>
+</div>
 
-  <div class="filters">
-    <div class="filter-group">
-      <label>Date Range</label>
-      <div class="date-inputs">
-        <input type="date" class="input-base" title="Start Date">
-        <span>to</span>
-        <input type="date" class="input-base" title="End Date">
-      </div>
+<div class="filters floating-card"
+  style="margin-bottom: 24px; display: flex; gap: 16px; padding: 16px; flex-wrap: wrap; align-items: flex-end;">
+  <div class="filter-group">
+    <label>Date Range</label>
+    <div class="date-inputs">
+      <input type="date" class="input-base" title="Start Date" [value]="startDate()"
+        (input)="startDate.set($any($event.target).value)">
+      <span>to</span>
+      <input type="date" class="input-base" title="End Date" [value]="endDate()"
+        (input)="endDate.set($any($event.target).value)">
     </div>
-
-    <div class="filter-group">
-      <label>Category</label>
-      <select class="input-base">
-        <option value="">All Categories</option>
-        <option value="1">Office Supplies</option>
-        <option value="2">Software Licenses</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label>Account</label>
-      <select class="input-base">
-        <option value="">All Accounts</option>
-        <option value="1010">1010 - Main Bank</option>
-        <option value="3110">3110 - Accounts Payable</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label>Counterparty</label>
-      <select class="input-base">
-        <option value="">All Counterparties</option>
-        <option value="1">TechCorp LLC</option>
-        <option value="2">OfficeMax</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label>Status</label>
-      <select class="input-base">
-        <option value="">All Statuses</option>
-        <option value="Completed">Completed</option>
-        <option value="Pending">Pending</option>
-        <option value="Reversed">Reversed</option>
-      </select>
-    </div>
-
-    <button class="btn-secondary">Apply Filters</button>
   </div>
+
+  <div class="filter-group">
+    <label>Category</label>
+    <select class="input-base" [value]="categoryId()" (change)="categoryId.set($any($event.target).value)">
+      <option value="">All Categories</option>
+      @for (cat of categoriesDict(); track cat.id) {
+      <option [value]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Account</label>
+    <select class="input-base" [value]="accountId()" (change)="accountId.set($any($event.target).value)">
+      <option value="">All Accounts</option>
+      @for (acc of accountsDict(); track acc.id) {
+      <option [value]="acc.id">{{ acc.code }} - {{ acc.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Counterparty</label>
+    <select class="input-base" [value]="counterpartyId()" (change)="counterpartyId.set($any($event.target).value)">
+      <option value="">All Counterparties</option>
+      @for (cp of counterpartiesDict(); track cp.id) {
+      <option [value]="cp.id">{{ cp.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Status</label>
+    <select class="input-base" [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="">All Statuses</option>
+      <option value="Completed">Completed</option>
+      <option value="Pending">Pending</option>
+      <option value="Reversed">Reversed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <button class="btn-secondary" (click)="applyFilters()">Apply Filters</button>
 </div>
 
 <div class="table-wrapper">
@@ -70,7 +77,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (entry of entries(); track entry.id) {
+      @for (entry of pageState().items; track entry.id) {
       <tr>
         <td class="text-muted">#{{ entry.id }}</td>
         <td>{{ entry.date | date:'shortDate' }}</td>
@@ -113,6 +120,10 @@
       }
     </tbody>
   </table>
+
+  <app-pagination [currentPage]="pageState().pageNumber" [totalPages]="pageState().totalPages"
+    [pageSize]="pageState().pageSize" [totalItems]="pageState().totalCount" (pageChange)="loadEntries($event)">
+  </app-pagination>
 </div>
 
 @if (isOperator()) {

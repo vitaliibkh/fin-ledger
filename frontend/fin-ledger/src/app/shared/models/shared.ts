@@ -10,4 +10,5 @@ export interface DictionaryItem {
   id: number;
   code?: string;
   name: string;
+  parentId?: number | null;
 }

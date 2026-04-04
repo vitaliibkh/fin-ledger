@@ -31,6 +31,11 @@ export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
 
   {
+    path: '404',
+    loadComponent: () => import('./features/not-found/not-found').then(c => c.NotFound)
+  },
+
+  {
     path: 'not-found',
     loadComponent: () => import('./features/not-found/not-found').then(c => c.NotFound)
   },

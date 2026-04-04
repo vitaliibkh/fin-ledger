@@ -25,3 +25,19 @@ export interface AccountFormDTO {
   parentId: number | null;
   isActive: boolean;
 }
+
+export interface CounterpartyView {
+  id: number;
+  name: string;
+  taxCode: string | null;
+  contactInfo: string | null;
+  isActive: boolean;
+}
+
+export interface CategoryView {
+  id: number;
+  name: string;
+  parentId: number | null;
+  parentName?: string;
+  isActive: boolean;
+}

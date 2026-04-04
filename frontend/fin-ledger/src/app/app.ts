@@ -1,7 +1,8 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { Auth } from './core/services/auth';
+import { AuthService } from './core/services/auth';
+import { ToastService } from './core/services/toast';
 
 interface NavItem {
   label: string;
@@ -18,7 +19,8 @@ interface NavItem {
   styleUrl: './app.scss'
 })
 export class App {
-  authService = inject(Auth);
+  authService = inject(AuthService);
+  toastService = inject(ToastService);
 
   private readonly allNavItems: NavItem[] = [
     { label: 'Dashboard', icon: 'monitoring', route: '/analytics/dashboard', roles: ['Analyst'] },

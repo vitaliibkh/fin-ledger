@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Auth } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/auth';
 import { AccountView, Currency, AccountType } from '../../../core/models/management';
 import { DictionaryItem, PagedResult } from '../../../shared/models/shared';
 
@@ -11,25 +11,26 @@ import { DictionaryItem, PagedResult } from '../../../shared/models/shared';
   styleUrl: './accounts.scss'
 })
 export class Accounts implements OnInit {
-  private authService = inject(Auth);
+  // --- DEPENDENCIES ---
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
-  readonly isManager = computed(() => this.authService.currentUser()?.role === 'Financial Manager');
-
+  // --- STATE & FILTERS ---
   readonly currencies = signal<Currency[]>([]);
-  readonly isModalOpen = signal(false);
-  readonly editingAccountId = signal<number | null>(null);
-
   readonly allAccountsDictionary = signal<DictionaryItem[]>([]);
 
   readonly pageState = signal<PagedResult<AccountView>>({
-    items: [],
-    totalCount: 0,
-    pageNumber: 1,
-    pageSize: 10,
-    totalPages: 1
+    items: [], totalCount: 0, pageNumber: 1, pageSize: 10, totalPages: 1
   });
 
+  readonly searchQuery = signal('');
+  readonly typeFilter = signal('');
+  readonly statusFilter = signal('true');
+
+  readonly isModalOpen = signal(false);
+  readonly editingAccountId = signal<number | null>(null);
+
+  // --- FORMS ---
   accountForm = this.fb.group({
     code: ['', [Validators.required, Validators.maxLength(20)]],
     name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -39,24 +40,29 @@ export class Accounts implements OnInit {
     isActive: [true]
   });
 
+  // --- COMPUTED STATE ---
+  readonly isManager = computed(() => this.authService.currentUser()?.role === 'Financial Manager');
+
   readonly availableParents = computed(() => {
     const currentId = this.editingAccountId();
     return this.allAccountsDictionary().filter(a => a.id !== currentId);
   });
 
+  // --- LIFECYCLE ---
   ngOnInit() {
     this.loadDependencies();
     this.loadAccounts(1);
   }
 
+  // --- DATA FETCHING ---
   loadDependencies() {
+    // TODO: GET /api/currencies
     this.currencies.set([
       { id: 1, code: 'UAH', name: 'Ukrainian Hryvnia' },
       { id: 2, code: 'USD', name: 'US Dollar' }
     ]);
 
-    console.log('Fetching lightweight Account Dictionary for dropdowns...');
-    // TODO: this.http.get<DictionaryItem[]>('/api/accounts/dictionary')
+    // TODO: GET /api/accounts/dictionary
     this.allAccountsDictionary.set([
       { id: 1, code: '1010', name: 'Main Bank Account' },
       { id: 2, code: '3110', name: 'Accounts Payable' },
@@ -65,8 +71,7 @@ export class Accounts implements OnInit {
   }
 
   loadAccounts(pageNumber: number) {
-    console.log(`Fetching Accounts from ASP.NET API - Page: ${pageNumber}`);
-
+    // TODO: GET /api/accounts?page=...&search=...&type=...&isActive=...
     const mockDbResponse: PagedResult<AccountView> = {
       items: [
         { id: 1, code: '1010', name: 'Main Bank Account', type: 'Active', currencyId: 1, parentId: null, balance: 15000.00, isActive: true },
@@ -81,17 +86,15 @@ export class Accounts implements OnInit {
     this.pageState.set(mockDbResponse);
   }
 
+  applyFilters() {
+    this.loadAccounts(1);
+  }
+
+  // --- USER ACTIONS ---
   openModal(account?: AccountView) {
     if (account) {
       this.editingAccountId.set(account.id);
-      this.accountForm.patchValue({
-        code: account.code,
-        name: account.name,
-        type: account.type,
-        currencyId: account.currencyId,
-        parentId: account.parentId,
-        isActive: account.isActive
-      });
+      this.accountForm.patchValue(account);
     } else {
       this.editingAccountId.set(null);
       this.accountForm.reset({ type: 'Active', isActive: true });
@@ -106,9 +109,7 @@ export class Accounts implements OnInit {
 
   saveAccount() {
     if (this.accountForm.valid) {
-      const formData = this.accountForm.value;
-      console.log('Submitting to ASP.NET:', formData);
-      // TODO: POST /api/accounts or PUT /api/accounts/{id}
+      // TODO: POST /api/accounts (if new) OR PUT /api/accounts/{id} (if editing)
       this.closeModal();
     } else {
       this.accountForm.markAllAsTouched();
@@ -117,6 +118,9 @@ export class Accounts implements OnInit {
 
   toggleStatus(account: AccountView) {
     // TODO: PATCH /api/accounts/{id}/status
-    this.pageState().items.find(acc => acc.id === account.id)!.isActive = !account.isActive;
+    this.pageState.update(state => ({
+      ...state,
+      items: state.items.map(i => i.id === account.id ? { ...i, isActive: !i.isActive } : i)
+    }));
   }
 }

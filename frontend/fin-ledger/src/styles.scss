@@ -146,7 +146,8 @@ p {
   border: none;
   color: $text-low;
   cursor: pointer;
-  padding: 6px;
+  padding: 5px;
+  padding-bottom: 0;
   border-radius: 4px;
   transition: $soft-transition;
 
@@ -312,5 +313,93 @@ p {
     margin-top: 0;
     margin-bottom: 24px;
     color: $text-high;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px;
+  background-color: rgba($bg-dark, 0.5);
+  border-radius: $radius-md;
+  border: 1px solid $border-color;
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      color: $text-low;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1;
+    }
+  }
+
+  .date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: $text-low;
+      font-size: 14px;
+    }
+  }
+
+  .input-base {
+    @include input-base;
+    padding: 8px 12px;
+    height: 36px;
+  }
+
+  button {
+    height: 36px;
+    padding: 0 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.global-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 16px 24px;
+  border-radius: $radius-md;
+  color: $text-high;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  box-shadow: $shadow-floating;
+  z-index: 9999;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  &.toast-error {
+    background-color: $error;
+    color: $bg-dark;
+  }
+
+  &.toast-success {
+    background-color: $primary-green;
+    color: $bg-dark;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

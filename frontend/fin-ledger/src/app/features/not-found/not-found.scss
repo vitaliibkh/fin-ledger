@@ -1,0 +1,47 @@
+@use '../../../styles/vars' as *;
+@use '../../../styles/mixins' as *;
+
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+}
+
+.error-content {
+  text-align: center;
+  padding: 64px 48px;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .error-icon {
+    font-size: 64px;
+    color: $error;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-size: 72px;
+    margin: 0;
+    color: $text-high;
+    line-height: 1;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin: 16px 0 12px;
+    color: $text-high;
+  }
+
+  p {
+    color: $text-low;
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+}

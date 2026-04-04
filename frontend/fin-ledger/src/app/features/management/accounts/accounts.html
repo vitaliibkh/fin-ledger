@@ -10,6 +10,35 @@
   }
 </div>
 
+<div class="filters floating-card" style="margin-bottom: 24px; display: flex; gap: 16px; padding: 16px;">
+  <div class="filter-group" style="flex: 1; min-width: 250px;">
+    <label>Search Account</label>
+    <input type="text" class="input-base" placeholder="Search by code or name..."
+           [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)">
+  </div>
+
+  <div class="filter-group">
+    <label>Account Type</label>
+    <select class="input-base" [value]="typeFilter()" (change)="typeFilter.set($any($event.target).value)">
+      <option value="">All Types</option>
+      <option value="Active">Active</option>
+      <option value="Passive">Passive</option>
+      <option value="Active-Passive">Active-Passive</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Status</label>
+    <select class="input-base" [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="">All Statuses</option>
+      <option value="true">Active</option>
+      <option value="false">Inactive</option>
+    </select>
+  </div>
+
+  <button class="btn-secondary" (click)="applyFilters()">Search</button>
+</div>
+
 <div class="table-wrapper floating-card">
   <table class="data-table">
     <thead>

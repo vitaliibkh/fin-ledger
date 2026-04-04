@@ -1,1 +1,92 @@
-<p>counterparties works!</p>
+<div class="page-header">
+  <div class="title-block">
+    <h2>Counterparties</h2>
+    <p>Manage clients, vendors, and external entities.</p>
+  </div>
+  @if (isManager()) {
+  <button class="btn-primary" (click)="openModal()"><span class="material-symbols-outlined">add</span> New
+    Counterparty</button>
+  }
+</div>
+
+<div class="filters floating-card" style="margin-bottom: 24px; display: flex; gap: 16px; padding: 16px;">
+  <div class="filter-group" style="flex: 1; min-width: 250px;">
+    <label>Search Counterparty</label>
+    <input type="text" class="input-base" placeholder="Search by name or tax code..."
+           [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)">
+  </div>
+
+  <div class="filter-group">
+    <label>Status</label>
+    <select class="input-base" [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="">All Statuses</option>
+      <option value="true">Active</option>
+      <option value="false">Inactive</option>
+    </select>
+  </div>
+
+  <button class="btn-secondary" (click)="applyFilters()">Search</button>
+</div>
+
+<div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Tax Code</th>
+        <th>Contact Info</th>
+        <th>Status</th>
+        @if (isManager()) { <th class="actions-col">Actions</th> }
+      </tr>
+    </thead>
+    <tbody>
+      @for (cp of pageState().items; track cp.id) {
+      <tr [class.inactive-row]="!cp.isActive">
+        <td><b>{{ cp.name }}</b></td>
+        <td class="font-mono">{{ cp.taxCode || '—' }}</td>
+        <td class="text-muted">{{ cp.contactInfo || '—' }}</td>
+        <td><span class="badge" [class.badge-success]="cp.isActive" [class.badge-neutral]="!cp.isActive">{{ cp.isActive
+            ? 'Active' : 'Inactive' }}</span></td>
+        @if (isManager()) {
+        <td class="actions-cell">
+          <button class="btn-icon" (click)="openModal(cp)"><span class="material-symbols-outlined">edit</span></button>
+          <button class="btn-icon" (click)="toggleStatus(cp)"><span class="material-symbols-outlined">{{ cp.isActive ?
+              'block' : 'check_circle' }}</span></button>
+        </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+  <app-pagination [currentPage]="pageState().pageNumber" [totalPages]="pageState().totalPages"
+    [pageSize]="pageState().pageSize" [totalItems]="pageState().totalCount"
+    (pageChange)="loadCounterparties($event)"></app-pagination>
+</div>
+
+@if (isModalOpen()) {
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>{{ editingId() ? 'Edit Counterparty' : 'New Counterparty' }}</h3>
+    <form [formGroup]="cpForm" (ngSubmit)="save()">
+      <div class="form-grid">
+        <div class="field full-width">
+          <label>Name *</label>
+          <input type="text" formControlName="name" class="input-base">
+        </div>
+        <div class="field">
+          <label>Tax Code</label>
+          <input type="text" formControlName="taxCode" class="input-base">
+        </div>
+        <div class="field">
+          <label>Contact Info</label>
+          <input type="text" formControlName="contactInfo" class="input-base">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="cpForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+}

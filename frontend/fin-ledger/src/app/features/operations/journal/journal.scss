@@ -1,46 +1,6 @@
 @use '../../../../styles/vars' as *;
 @use '../../../../styles/mixins' as *;
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 16px;
-  background-color: rgba($bg-dark, 0.5);
-  border-radius: $radius-md;
-  border: 1px solid $border-color;
-
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    label {
-      color: $text-low;
-      font-size: 12px;
-      font-weight: 500;
-    }
-  }
-
-  .date-inputs {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    span {
-      color: $text-low;
-      font-size: 14px;
-    }
-  }
-
-  .input-base {
-    @include input-base;
-    padding: 8px 12px;
-  }
-}
-
 .status-select {
   @include input-base;
   padding: 4px 28px 4px 8px;

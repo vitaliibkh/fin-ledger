@@ -39,3 +39,12 @@
 } @else {
 <router-outlet />
 }
+
+@if (toastService.currentToast(); as toast) {
+  <div class="global-toast" [class.toast-error]="toast.type === 'error'" [class.toast-success]="toast.type === 'success'">
+    <span class="material-symbols-outlined">
+      {{ toast.type === 'error' ? 'error' : 'check_circle' }}
+    </span>
+    {{ toast.message }}
+  </div>
+}

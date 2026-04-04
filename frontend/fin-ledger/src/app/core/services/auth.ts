@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserRole, User } from '../models/auth';
 
 @Injectable({ providedIn: 'root' })
-export class Auth {
+export class AuthService {
   private router = inject(Router);
 
   readonly currentUser = signal<User | null>(null);
@@ -14,7 +14,7 @@ export class Auth {
    * Backend will check credentials and return User + JWT
    */
   async login(username: string, password: string): Promise<void> {
-    const mockUser: User = { id: 1, username, role: 'Operator' };
+    const mockUser: User = { id: 1, username, role: 'Analyst' };
 
     localStorage.setItem('token', 'fake-jwt-token');
 
