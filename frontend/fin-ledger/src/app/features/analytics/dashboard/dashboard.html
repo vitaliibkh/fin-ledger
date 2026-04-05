@@ -9,16 +9,16 @@
 <div class="kpi-grid">
   <div class="kpi-card floating-card">
     <span class="kpi-title">Total Revenue (YTD)</span>
-    <span class="kpi-value text-success">{{ m.totalRevenue | currency:'USD' }}</span>
+    <span class="kpi-value text-success">{{ m.totalRevenue | currency:'EUR' }}</span>
   </div>
   <div class="kpi-card floating-card">
     <span class="kpi-title">Total Expenses (YTD)</span>
-    <span class="kpi-value text-error">{{ m.totalExpenses | currency:'USD' }}</span>
+    <span class="kpi-value text-error">{{ m.totalExpenses | currency:'EUR' }}</span>
   </div>
   <div class="kpi-card floating-card">
     <span class="kpi-title">Net Cash Flow</span>
     <span class="kpi-value" [class.text-success]="m.netCashFlow > 0" [class.text-error]="m.netCashFlow < 0">
-      {{ m.netCashFlow | currency:'USD' }}
+      {{ m.netCashFlow | currency:'EUR' }}
     </span>
   </div>
 </div>

@@ -238,7 +238,7 @@ ALTER TABLE ONLY public.cash_flow_category
 
 
 ALTER TABLE public.account
-    ADD CONSTRAINT chk_account_type CHECK (((type)::text = ANY ((ARRAY['Active'::character varying, 'Passive'::character varying, 'Active-Passive'::character varying])::text[]))) NOT VALID;
+    ADD CONSTRAINT chk_account_type CHECK (((type)::text = ANY (ARRAY[('Asset'::character varying)::text, ('Liability'::character varying)::text, ('Equity'::character varying)::text, ('Revenue'::character varying)::text, ('Expense'::character varying)::text]))) NOT VALID;
 
 
 

@@ -1,0 +1,94 @@
+<div class="page-header">
+  <div class="title-block">
+    <h2>System Initialization</h2>
+    <p>Manage raw database data, external imports, and system resets.</p>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 24px;">
+
+  <div class="floating-card" style="padding: 24px;">
+    <h3 style="margin-top: 0; margin-bottom: 8px;">1. Import Dictionary Data</h3>
+    <p class="text-muted" style="margin-bottom: 24px; font-size: 14px;">Upload external CSV files to populate core
+      accounting dependencies.</p>
+
+    <div class="form-grid" style="align-items: end;">
+
+      <div class="field">
+        <label>Chart of Accounts</label>
+        <input type="file" class="input-base" accept=".csv" (change)="onFileSelected($event, 'accounts')">
+      </div>
+      <button class="btn-secondary" [disabled]="isUploading()['accounts']" (click)="uploadFile('accounts')">
+        {{ isUploading()['accounts'] ? 'Uploading...' : 'Import Accounts' }}
+      </button>
+
+      <div class="field">
+        <label>Cash Flow Categories</label>
+        <input type="file" class="input-base" accept=".csv" (change)="onFileSelected($event, 'categories')">
+      </div>
+      <button class="btn-secondary" [disabled]="isUploading()['categories']" (click)="uploadFile('categories')">
+        {{ isUploading()['categories'] ? 'Uploading...' : 'Import Categories' }}
+      </button>
+
+      <div class="field">
+        <label>Currencies</label>
+        <input type="file" class="input-base" accept=".csv,.json" (change)="onFileSelected($event, 'currencies')">
+      </div>
+      <button class="btn-secondary" [disabled]="isUploading()['currencies']" (click)="uploadFile('currencies')">
+        {{ isUploading()['currencies'] ? 'Uploading...' : 'Import Currencies' }}
+      </button>
+
+      <div class="field">
+        <label>Historical Exchange Rates</label>
+        <input type="file" class="input-base" accept=".csv" (change)="onFileSelected($event, 'rates')">
+      </div>
+      <button class="btn-secondary" [disabled]="isUploading()['rates']" (click)="uploadFile('rates')">
+        {{ isUploading()['rates'] ? 'Uploading...' : 'Import Rates' }}
+      </button>
+
+    </div>
+  </div>
+
+  <div class="floating-card" style="padding: 24px;">
+    <h3 style="margin-top: 0; margin-bottom: 8px;">2. Generate Test Data</h3>
+    <p class="text-muted" style="margin-bottom: 24px; font-size: 14px;">Randomly generate transactional data (requires
+      dictionaries to be imported first).</p>
+
+    <div class="form-grid" style="align-items: end; max-width: 600px;">
+      <div class="field">
+        <label>Counterparties to Generate</label>
+        <input type="number" class="input-base" [value]="counterpartyCount()"
+          (input)="counterpartyCount.set(+$any($event.target).value)">
+      </div>
+
+      <div class="field">
+        <label>Journal Entries to Generate</label>
+        <input type="number" class="input-base" [value]="journalCount()"
+          (input)="journalCount.set(+$any($event.target).value)">
+      </div>
+
+      <div class="field full-width">
+        <button class="btn-primary" [disabled]="isGenerating()" (click)="generateData()" style="width: 100%;">
+          <span class="material-symbols-outlined">database</span>
+          {{ isGenerating() ? 'Generating Data...' : 'Generate System Data' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="floating-card" style="padding: 24px; border: 1px solid rgba(251, 113, 133, 0.3);">
+    <h3 style="margin-top: 0; margin-bottom: 8px; color: var(--error);">Danger Zone</h3>
+    <p class="text-muted" style="margin-bottom: 24px; font-size: 14px;">
+      This action will permanently delete all Journal Entries, Accounts, Categories, Counterparties, Currencies, and
+      Rates
+      from the
+      database.
+    </p>
+
+    <button class="btn-danger" [disabled]="isCleaning()" (click)="cleanDatabase()">
+      <span class="material-symbols-outlined">delete_forever</span>
+      {{ isCleaning() ? 'Wiping Database...' : 'Clean Database' }}
+    </button>
+  </div>
+
+</div>

@@ -14,7 +14,7 @@ export class AuthService {
    * Backend will check credentials and return User + JWT
    */
   async login(username: string, password: string): Promise<void> {
-    const mockUser: User = { id: 1, username, role: 'Analyst' };
+    const mockUser: User = { id: 1, username, role: 'Financial Manager' };
 
     localStorage.setItem('token', 'fake-jwt-token');
 

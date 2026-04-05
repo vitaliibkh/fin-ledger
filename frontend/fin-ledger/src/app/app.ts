@@ -27,7 +27,8 @@ export class App {
     { label: 'Journal', icon: 'receipt_long', route: '/operations/journal', roles: ['Operator', 'Financial Manager', 'Analyst'] },
     { label: 'Accounts', icon: 'account_balance_wallet', route: '/management/accounts', roles: ['Operator', 'Financial Manager', 'Analyst'] },
     { label: 'Counterparties', icon: 'groups', route: '/management/counterparties', roles: ['Operator', 'Financial Manager', 'Analyst'] },
-    { label: 'Categories', icon: 'category', route: '/management/categories', roles: ['Financial Manager'] }
+    { label: 'Categories', icon: 'category', route: '/management/categories', roles: ['Financial Manager'] },
+    { label: 'System Data', icon: 'database', route: '/management/system', roles: ['Financial Manager'] }
   ];
 
   readonly visibleNavItems = computed(() => {

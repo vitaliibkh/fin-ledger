@@ -8,6 +8,7 @@ import { Counterparties } from './counterparties/counterparties';
 import { Categories } from './categories/categories';
 import { SharedModule } from '../../shared/shared-module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SystemInit } from './system-init/system-init';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,12 @@ import { ReactiveFormsModule } from '@angular/forms';
       {
         path: 'categories',
         component: Categories,
+        canActivate: [roleGuard],
+        data: { roles: ['Financial Manager'] }
+      },
+      {
+        path: 'system',
+        component: SystemInit,
         canActivate: [roleGuard],
         data: { roles: ['Financial Manager'] }
       },

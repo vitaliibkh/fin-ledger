@@ -1,4 +1,4 @@
-export type AccountType = 'Active' | 'Passive' | 'Active-Passive';
+export type AccountType = 'Asset' | 'Liability' | 'Equity' | 'Revenue' | 'Expense';
 
 export interface Currency {
   id: number;

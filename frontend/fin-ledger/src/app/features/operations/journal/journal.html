@@ -85,7 +85,7 @@
         <td><span class="badge badge-outline">{{ entry.debitAccountCode }}</span></td>
         <td><span class="badge badge-outline">{{ entry.creditAccountCode }}</span></td>
         <td class="text-muted">{{ entry.counterpartyName || '—' }}</td>
-        <td class="amount font-mono">{{ entry.amount | currency:'USD' }}</td>
+        <td class="amount font-mono">{{ entry.amount | currency:'EUR' }}</td>
         <td>
           @if (canEditStatus()) {
           <select class="status-select" [ngClass]="'status-' + entry.status.toLowerCase()"

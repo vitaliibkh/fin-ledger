@@ -34,7 +34,7 @@ export class Accounts implements OnInit {
   accountForm = this.fb.group({
     code: ['', [Validators.required, Validators.maxLength(20)]],
     name: ['', [Validators.required, Validators.maxLength(100)]],
-    type: ['Active' as AccountType, Validators.required],
+    type: ['Asset' as AccountType, Validators.required],
     currencyId: [null as number | null, Validators.required],
     parentId: [null as number | null],
     isActive: [true]
@@ -74,8 +74,8 @@ export class Accounts implements OnInit {
     // TODO: GET /api/accounts?page=...&search=...&type=...&isActive=...
     const mockDbResponse: PagedResult<AccountView> = {
       items: [
-        { id: 1, code: '1010', name: 'Main Bank Account', type: 'Active', currencyId: 1, parentId: null, balance: 15000.00, isActive: true },
-        { id: 2, code: '3110', name: 'Accounts Payable', type: 'Passive', currencyId: 1, parentId: null, balance: -4500.50, isActive: true }
+        { id: 1, code: '1010', name: 'Main Bank Account', type: 'Asset', currencyId: 1, parentId: null, balance: 15000.00, isActive: true },
+        { id: 2, code: '3110', name: 'Accounts Payable', type: 'Equity', currencyId: 1, parentId: null, balance: -4500.50, isActive: true }
       ],
       totalCount: 42,
       pageNumber: pageNumber,
@@ -97,7 +97,7 @@ export class Accounts implements OnInit {
       this.accountForm.patchValue(account);
     } else {
       this.editingAccountId.set(null);
-      this.accountForm.reset({ type: 'Active', isActive: true });
+      this.accountForm.reset({ type: 'Asset', isActive: true });
     }
     this.isModalOpen.set(true);
   }
